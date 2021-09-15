@@ -14,10 +14,14 @@ document.addEventListener('DOMContentLoaded',()=>{
         {name:'wedding',img:'img/wedding.png'},
     ]
 
+    cards.sort(()=>0.5 - Math.random())
+
     const grid= document.querySelector('.grid')
-    const response=document.querySelector('#resposne')
+    const response=document.querySelector('#response')
+    const result=document.querySelector('#result')
     var selectedCards=[]
-    var selectedCardsId=[]
+    var selectedCardsId=[]  
+    var carsWon=[]
 
     function createBoard(){
         for (let index = 0; index < cards.length; index++) {
@@ -31,11 +35,32 @@ document.addEventListener('DOMContentLoaded',()=>{
     }
 
     function isItMatch(){
-        var allCards=document.querySelectorAll('img')
+        const allCards=document.querySelectorAll('img')
         const optionOneId=selectedCardsId[0]
         const optionTwoId=selectedCardsId[1]
-        if(selectedCardsId[0] === selectedCardsId[1]){
-            response.textContent='You found a match Great'
+        if(optionOneId === optionTwoId){
+            allCards[optionOneId].setAttribute('src','img/blank.png')
+            allCards[optionTwoId].setAttribute('src','img/blank.png')
+            response.textContent='You have clicked the same image, be careful!'
+
+        }else if(selectedCards[0]===selectedCards[1]){
+            allCards[optionOneId].setAttribute('src','img/space.png')
+            allCards[optionTwoId].setAttribute('src','img/space.png')
+            allCards[optionOneId].removeEventListener('click', flipCard)
+            allCards[optionTwoId].removeEventListener('click', flipCard)
+            carsWon.push(selectedCards)
+            response.textContent='You found a match, great!'
+        }
+        else{
+            response.textContent='Sorry try again :('
+            allCards[optionOneId].setAttribute('src','img/blank.png')
+            allCards[optionTwoId].setAttribute('src','img/blank.png')
+        }
+        selectedCards=[]
+        selectedCardsId=[]
+        result.textContent=carsWon.length
+        if(carsWon.length===cards.length/2){
+            result.textContent='Woow you are Perfect , You found them all!!'
         }
     }
 
@@ -43,6 +68,7 @@ document.addEventListener('DOMContentLoaded',()=>{
         var cardId = this.getAttribute('data-id')
         selectedCards.push(cards[cardId].name)
         selectedCardsId.push(cardId)
+        console.log(...selectedCards);
         this.setAttribute('src',cards[cardId].img)
         if(selectedCards.length===2){
             setTimeout(isItMatch, 500);
