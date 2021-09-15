@@ -1,0 +1,19 @@
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+    color: white;
+    background-color: #111;
+}
+.grid{
+    display: flex;
+    flex-wrap: wrap;
+    width: 198px;
+    border:2px solid rgb(128, 125, 125);
+}
+.cards{
+    border:1px solid #aaa;
+    cursor: pointer;
+}
